@@ -95,7 +95,6 @@ CREATE OR REPLACE VIEW {{target_view}}
         SOURCE.{{col.name}}{%- if not loop.last %},{% endif %}{% endfor %} FROM {{target_view}} SOURCE WHERE SOURCE.METADATA$ACTION = 'INSERT' 
         AND SOURCE.METADATA$ISUPDATE = 'FALSE';
     {%- endif -%}
-    DROP VIEW {{target_view}}
 
     
 {%- else -%}
@@ -133,5 +132,7 @@ CREATE OR REPLACE VIEW {{target_view}}
   {{ run_hooks(post_hooks, inside_transaction=False) }}
 
   {{ return({'relations': [target_relation]}) }}
+
+DROP VIEW if exists {{target_view}}
 
 {%- endmaterialization %}
