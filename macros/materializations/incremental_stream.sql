@@ -39,6 +39,7 @@ CREATE STREAM IF NOT EXISTS {{target_stream}} ON TABLE {{source_table}};
 CREATE OR REPLACE VIEW {{target_view}}
     AS ({{ sql }});
 CREATE TABLE IF NOT EXISTS {{ this }} AS SELECT * FROM {{target_view}};
+DROP VIEW {{target_view}}
 {%- else -%}
 {#-- Check the presence of records to merge --#}
 {%- set v_count -%}
@@ -94,6 +95,7 @@ CREATE OR REPLACE VIEW {{target_view}}
         SOURCE.{{col.name}}{%- if not loop.last %},{% endif %}{% endfor %} FROM {{target_view}} SOURCE WHERE SOURCE.METADATA$ACTION = 'INSERT' 
         AND SOURCE.METADATA$ISUPDATE = 'FALSE';
     {%- endif -%}
+DROP VIEW {{target_view}}
 
     
 {%- else -%}
