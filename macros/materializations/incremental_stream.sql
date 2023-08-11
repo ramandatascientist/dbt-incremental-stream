@@ -95,7 +95,7 @@ CREATE OR REPLACE VIEW {{target_view}}
         SOURCE.{{col.name}}{%- if not loop.last %},{% endif %}{% endfor %} FROM {{target_view}} SOURCE WHERE SOURCE.METADATA$ACTION = 'INSERT' 
         AND SOURCE.METADATA$ISUPDATE = 'FALSE';
     {%- endif -%}
-DROP VIEW {{target_view}}
+    DROP VIEW {{target_view}}
 
     
 {%- else -%}
