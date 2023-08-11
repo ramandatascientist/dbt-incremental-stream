@@ -39,6 +39,7 @@ CREATE STREAM IF NOT EXISTS {{target_stream}} ON TABLE {{source_table}};
 CREATE OR REPLACE VIEW {{target_view}}
     AS ({{ sql }});
 CREATE TABLE IF NOT EXISTS {{ this }} AS SELECT * FROM {{target_view}};
+DROP VIEW {{target_view}}
 {%- else -%}
 {#-- Check the presence of records to merge --#}
 {%- set v_count -%}
@@ -131,5 +132,7 @@ CREATE OR REPLACE VIEW {{target_view}}
   {{ run_hooks(post_hooks, inside_transaction=False) }}
 
   {{ return({'relations': [target_relation]}) }}
+
+DROP VIEW if exists {{target_view}}
 
 {%- endmaterialization %}
